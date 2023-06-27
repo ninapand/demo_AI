@@ -1,0 +1,133 @@
+{
+	"info": {
+		"_postman_id": "b98f04ac-01b9-4ae8-b67a-98ee0a3596a7",
+		"name": "OpenAI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4496366",
+		"_collection_link": "https://red-meadow-4749.postman.co/workspace/Tech-Challenges~9db6ca60-2476-4aad-8180-ad9bed08029e/collection/4496366-b98f04ac-01b9-4ae8-b67a-98ee0a3596a7?action=share&creator=4496366&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Get models",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.openai.com/v1/models",
+					"protocol": "https",
+					"host": [
+						"api",
+						"openai",
+						"com"
+					],
+					"path": [
+						"v1",
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChatGPT API",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//pm.globals.set(\"g_ques\",\"Who was the captain of the winning team?\");\r",
+							"pm.globals.set(\"g_ques\",data.QUES);\r",
+							"pm.globals.set(\"g_expAns\",data.ExpAns);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"TC1: Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"TC2: Questions \", function () {\r",
+							"    var jsonData = pm.response.json();  \r",
+							"    pm.expect(jsonData.choices[0].message.content).to.include(pm.globals.get(\"g_expAns\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"model\": \"gpt-3.5-turbo\",\r\n    \"messages\": [\r\n        {\r\n            \"role\": \"system\",\r\n            \"content\": \"Your name is val. Be polite and professional\"\r\n        },\r\n        {\r\n            \"role\": \"assistant\",\r\n            \"content\": \"IPL final in 2008\"\r\n        },   \r\n        {\r\n            \"role\": \"user\",\r\n            \"content\": \"{{g_ques}}\"\r\n        }       \r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.openai.com/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"openai",
+						"com"
+					],
+					"path": [
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{apiKey}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "apiKey",
+			"value": "FIX ME",
+			"type": "string"
+		}
+	]
+}
